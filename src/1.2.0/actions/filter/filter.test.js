@@ -1015,4 +1015,204 @@ describe('Filter Action', () => {
         });
 
     });
+
+    describe('Distance Filter Tests', () => {
+
+        /**
+         * Helper function to generate HTML element
+         * @param {string} html
+         * @returns {HTMLElement}
+         */
+        const generateHTMLElement = (html) => {
+            const div = document.createElement('div');
+            div.innerHTML = html.trim();
+            return div.firstChild;
+        };
+
+        it('should format distances correctly', () => {
+            // Test distances less than 1km (should be in meters)
+            expect(FilterAction.formatDistance(0.1)).toBe('100m');
+            expect(FilterAction.formatDistance(0.5)).toBe('500m');
+            expect(FilterAction.formatDistance(0.99)).toBe('990m');
+
+            // Test distances 1km or greater (should be in km with no decimal places)
+            expect(FilterAction.formatDistance(1)).toBe('1km');
+            expect(FilterAction.formatDistance(1.4)).toBe('1km');
+            expect(FilterAction.formatDistance(1.6)).toBe('2km');
+            expect(FilterAction.formatDistance(5.3)).toBe('5km');
+            expect(FilterAction.formatDistance(10.7)).toBe('11km');
+        });
+
+        it('should calculate distances correctly using Haversine formula', () => {
+            // New York to Los Angeles (approx. 3935 km)
+            const nyLat = 40.7128;
+            const nyLng = -74.0060;
+            const laLat = 34.0522;
+            const laLng = -118.2437;
+
+            const distance = FilterAction.calculateDistance(nyLat, nyLng, laLat, laLng);
+
+            // Allow for small rounding differences
+            expect(distance).toBeGreaterThan(3900);
+            expect(distance).toBeLessThan(4000);
+        });
+
+        it('should filter and sort items by distance', () => {
+            // Create test items with lat/lng data
+            const item1 = generateHTMLElement(`
+                <div>
+                    <span class="lat" data-lat="40.7128"></span>
+                    <span class="lng" data-lng="-74.0060"></span>
+                    <div class="distance"></div>
+                </div>
+            `);
+
+            const item2 = generateHTMLElement(`
+                <div>
+                    <span class="lat" data-lat="34.0522"></span>
+                    <span class="lng" data-lng="-118.2437"></span>
+                    <div class="distance"></div>
+                </div>
+            `);
+
+            const item3 = generateHTMLElement(`
+                <div>
+                    <span class="lat" data-lat="41.8781"></span>
+                    <span class="lng" data-lng="-87.6298"></span>
+                    <div class="distance"></div>
+                </div>
+            `);
+
+            const items = [item1, item2, item3];
+            
+            // User location: Washington DC
+            const userLat = 38.9072;
+            const userLng = -77.0369;
+            
+            // Filter and sort by distance
+            const result = FilterAction.distanceFilter(
+                items,
+                '.lat',
+                '.lng',
+                'data-lat',
+                'data-lng',
+                null,
+                userLat,
+                userLng,
+                '.distance'
+            );
+            
+            // Expected order based on actual distances from DC:
+            // NY (item1) ~ 328km, Chicago (item3) ~ 958km, LA (item2) ~ 3700km
+            expect(result.length).toBe(3);
+            
+            // Check that distance display elements were updated
+            for (let item of result) {
+                const distanceEl = item.querySelector('.distance');
+                expect(distanceEl.textContent).not.toBe('');
+                expect(distanceEl.style.display).toBe('inline-block');
+            }
+            
+            // Check that the first item has NY coordinates (closest to DC)
+            const firstItemLat = result[0].querySelector('.lat').getAttribute('data-lat');
+            expect(firstItemLat).toBe('40.7128'); // NY latitude
+        });
+
+        it('should filter out items beyond max distance', () => {
+            // Create test items with lat/lng data
+            const item1 = generateHTMLElement(`
+                <div>
+                    <span class="lat" data-lat="40.7128"></span>
+                    <span class="lng" data-lng="-74.0060"></span>
+                    <div class="distance"></div>
+                </div>
+            `);
+
+            const item2 = generateHTMLElement(`
+                <div>
+                    <span class="lat" data-lat="34.0522"></span>
+                    <span class="lng" data-lng="-118.2437"></span>
+                    <div class="distance"></div>
+                </div>
+            `);
+
+            const items = [item1, item2];
+
+            // User location: Washington DC
+            const userLat = 38.9072;
+            const userLng = -77.0369;
+
+            // Filter with max distance of 500km (should exclude LA which is ~3700km away)
+            const result = FilterAction.distanceFilter(
+                items,
+                '.lat',
+                '.lng',
+                'data-lat',
+                'data-lng',
+                500, // Max distance in km
+                userLat,
+                userLng,
+                '.distance'
+            );
+
+            // Only NY should be within 500km of DC
+            expect(result.length).toBe(1);
+
+            // Check that the remaining item has NY coordinates
+            const latEl = result[0].querySelector('.lat');
+            expect(latEl.getAttribute('data-lat')).toBe('40.7128');
+        });
+
+        it('should handle items with missing or invalid coordinates', () => {
+            // Create test items with valid and invalid lat/lng data
+            const validItem = generateHTMLElement(`
+                <div>
+                    <span class="lat" data-lat="40.7128"></span>
+                    <span class="lng" data-lng="-74.0060"></span>
+                    <div class="distance"></div>
+                </div>
+            `);
+
+            const missingLatItem = generateHTMLElement(`
+                <div>
+                    <div class="distance"></div>
+                </div>
+            `);
+
+            const invalidLatItem = generateHTMLElement(`
+                <div>
+                    <span class="lat" data-lat="invalid"></span>
+                    <span class="lng" data-lng="-87.6298"></span>
+                    <div class="distance"></div>
+                </div>
+            `);
+
+            const items = [validItem, missingLatItem, invalidLatItem];
+            
+            // User location
+            const userLat = 38.9072;
+            const userLng = -77.0369;
+            
+            // Filter and sort by distance
+            const result = FilterAction.distanceFilter(
+                items,
+                '.lat',
+                '.lng',
+                'data-lat',
+                'data-lng',
+                null,
+                userLat,
+                userLng,
+                '.distance'
+            );
+            
+            // Check that only the valid item is included
+            // The function should filter out items with missing or invalid lat/lng
+            expect(result.includes(validItem)).toBe(true);
+            expect(result.includes(missingLatItem)).toBe(false);
+            expect(result.includes(invalidLatItem)).toBe(false);
+        });
+    });
+
+
 });

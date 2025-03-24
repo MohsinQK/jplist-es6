@@ -34,6 +34,10 @@ class ContentManager{
             {
                 options: 'textFilterOptions',
                 name: 'textFilter'
+            },
+            {
+                options: 'distanceFilterOptions',
+                name: 'distanceFilter'
             }
         ];
 
@@ -68,10 +72,10 @@ class ContentManager{
                     let filtered = itemsBlock.items;
                     for(let filter of filters){
 
-                        //pathFilterOptions, rangeFilterOptions or textFilterOptions
+                        //pathFilterOptions, rangeFilterOptions, textFilterOptions or distanceFilterOptions
                         const filterName = filter.options;
 
-                        if(options[filterName]){
+                        if(options[filterName] && options[filterName].length > 0){
 
                             const splitted = ContentManager.splitByLogic(options[filterName]);
 
@@ -172,6 +176,18 @@ class ContentManager{
                     option.to,
                     option.min,
                     option.max);
+            }
+            
+            case 'distanceFilter' : {
+                return FilterAction.distanceFilter(filtered,
+                    option.latPath,
+                    option.lngPath,
+                    option.latAttr,
+                    option.lngAttr,
+                    option.maxDistance,
+                    option.userLat,
+                    option.userLng,
+                    option.distanceDisplayPath);
             }
         }
 
@@ -349,7 +365,8 @@ class ContentManager{
             //there can be multiple filter options
             textFilterOptions: [],
             pathFilterOptions: [],
-            rangeFilterOptions: []
+            rangeFilterOptions: [],
+            distanceFilterOptions: []
         };
 
         if(!baseControlsGroups) return options;
@@ -382,6 +399,13 @@ class ContentManager{
 
                 //add base control group sort options
                 options.rangeFilterOptions = options.rangeFilterOptions.concat(baseControlsGroup.getRangeFilterOptions());
+            }
+
+            //get distance filter options only from distance filter controls
+            if(baseControlsGroup.getDistanceFilterOptions) {
+
+                //add base control group sort options
+                options.distanceFilterOptions = options.distanceFilterOptions.concat(baseControlsGroup.getDistanceFilterOptions());
             }
 
             if(baseControlsGroup.getPaginationOptions) {

@@ -62,6 +62,9 @@ import DropdownFilterControl from './controls/filter/path-filters/dropdown-filte
 import ButtonsRangeFilter from './controls/filter/range-filters/buttons-range-filter/buttons-range-filter.control';
 import RangeSliderFilter from './controls/filter/range-filters/slider-range-filter/slider-range-filter.control';
 
+//distance filter
+import AddressDistanceFilterControl from './controls/filter/distance-filters/address-distance-filter/address-distance-filter.control';
+
 //other
 import NoResultsControl from './controls/no-results/no-results.control';
 import DropdownControl from './controls/base/controls/dropdown/base-dropdown.control';
@@ -119,6 +122,8 @@ import CounterControl from './controls/counter/counter.control';
 
         ['buttons-range-filter', ButtonsRangeFilter],
         ['slider-range-filter', RangeSliderFilter],
+
+        ['address-distance-filter', AddressDistanceFilterControl],
 
         ['no-results', NoResultsControl],
         ['dropdown', DropdownControl],

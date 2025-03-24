@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jPList ES6 - Address Distance Filter Demo</title>
+
+    <!-- CSS -->
+    <link href="../../../../../dist/1.2.0/jplist.styles.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .controls-box {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+
+        .address-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .items-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .location-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .location-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .location-address {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .location-distance {
+            display: none; /* Initially hidden */
+            padding: 3px 8px;
+            background-color: #e9f7fe;
+            color: #0077cc;
+            border-radius: 3px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .loading-indicator {
+            display: none;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translateY(-50%) rotate(0deg); }
+            100% { transform: translateY(-50%) rotate(360deg); }
+        }
+
+        .filter-block {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .no-results {
+            display: none;
+            padding: 20px;
+            text-align: center;
+            background-color: #f8d7da;
+            color: #721c24;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>Address Distance Filter Demo</h1>
+        <p>Type an address to find locations sorted by distance (closest first)</p>
+
+        <!-- Controls -->
+        <div class="controls-box filter-block">
+            <div
+                data-jplist-control="address-distance-filter"
+                data-group="group1"
+                data-name="address-filter"
+                data-lat-path=".location-lat"
+                data-lng-path=".location-lng"
+                data-lat-attr="data-lat"
+                data-lng-attr="data-lng"
+                data-distance-display=".location-distance"
+                data-api-key="">
+
+                <input
+                    type="text"
+                    data-type="address-input"
+                    class="address-input"
+                    placeholder="Enter your address to find nearby locations"
+                    value="">
+                <div class="loading-indicator"></div>
+            </div>
+        </div>
+
+        <!-- No results control -->
+        <div
+            class="no-results"
+            data-jplist-control="no-results"
+            data-group="group1"
+            data-name="no-results">
+            No locations found near your address
+        </div>
+
+        <!-- Data -->
+        <div class="items-container" data-jplist-group="group1">
+
+            <!-- Location 1 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Central Park</div>
+                <div class="location-address">New York, NY 10022</div>
+                <div class="location-lat" data-lat="40.7812"></div>
+                <div class="location-lng" data-lng="-73.9665"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 2 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Golden Gate Park</div>
+                <div class="location-address">San Francisco, CA 94121</div>
+                <div class="location-lat" data-lat="37.7694"></div>
+                <div class="location-lng" data-lng="-122.4862"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 3 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Millennium Park</div>
+                <div class="location-address">Chicago, IL 60602</div>
+                <div class="location-lat" data-lat="41.8826"></div>
+                <div class="location-lng" data-lng="-87.6226"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 4 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Griffith Park</div>
+                <div class="location-address">Los Angeles, CA 90027</div>
+                <div class="location-lat" data-lat="34.1365"></div>
+                <div class="location-lng" data-lng="-118.2946"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 5 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Balboa Park</div>
+                <div class="location-address">San Diego, CA 92101</div>
+                <div class="location-lat" data-lat="32.7341"></div>
+                <div class="location-lng" data-lng="-117.1446"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 6 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Boston Common</div>
+                <div class="location-address">Boston, MA 02116</div>
+                <div class="location-lat" data-lat="42.3551"></div>
+                <div class="location-lng" data-lng="-71.0657"></div>
+                <div class="location-distance"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../../../dist/1.2.0/jplist.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            // Initialize jPList
+            jplist.init();
+        });
+    </script>
+</body>
+</html>
