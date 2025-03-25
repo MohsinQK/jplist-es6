@@ -71,7 +71,7 @@
         .loading-indicator {
             display: none;
             position: absolute;
-            right: 10px;
+            right: 25px;
             top: 50%;
             transform: translateY(-50%);
             width: 20px;
@@ -95,10 +95,34 @@
             position: relative;
         }
 
+        .distance-button {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            margin: 5px;
+        }
+
+        .distance-button[data-selected="true"] {
+            background-color: #007bff;
+            color: white;
+            border-color: #0069d9;
+        }
+
+        .distance-button:hover {
+            background-color: #e9ecef;
+        }
+
+        .distance-button[data-selected="true"]:hover {
+            background-color: #0069d9;
+        }
+
         .no-results {
             display: none;
-            padding: 20px;
-            text-align: center;
+            padding: 15px;
             background-color: #f8d7da;
             color: #721c24;
             border-radius: 5px;
@@ -148,55 +172,181 @@
 
             <!-- Location 1 -->
             <div class="location-item" data-jplist-item>
-                <div class="location-name">Central Park</div>
-                <div class="location-address">New York, NY 10022</div>
-                <div class="location-lat" data-lat="40.7812"></div>
-                <div class="location-lng" data-lng="-73.9665"></div>
+                <div class="location-name">Brandenburg Gate</div>
+                <div class="location-address">Pariser Platz, 10117 Berlin</div>
+                <div class="location-lat" data-lat="52.5163"></div>
+                <div class="location-lng" data-lng="13.3777"></div>
                 <div class="location-distance"></div>
             </div>
 
             <!-- Location 2 -->
             <div class="location-item" data-jplist-item>
-                <div class="location-name">Golden Gate Park</div>
-                <div class="location-address">San Francisco, CA 94121</div>
-                <div class="location-lat" data-lat="37.7694"></div>
-                <div class="location-lng" data-lng="-122.4862"></div>
+                <div class="location-name">Neuschwanstein Castle</div>
+                <div class="location-address">Neuschwansteinstraße 20, 87645 Schwangau</div>
+                <div class="location-lat" data-lat="47.5576"></div>
+                <div class="location-lng" data-lng="10.7498"></div>
                 <div class="location-distance"></div>
             </div>
 
             <!-- Location 3 -->
             <div class="location-item" data-jplist-item>
-                <div class="location-name">Millennium Park</div>
-                <div class="location-address">Chicago, IL 60602</div>
-                <div class="location-lat" data-lat="41.8826"></div>
-                <div class="location-lng" data-lng="-87.6226"></div>
+                <div class="location-name">Cologne Cathedral</div>
+                <div class="location-address">Domkloster 4, 50667 Köln</div>
+                <div class="location-lat" data-lat="50.9413"></div>
+                <div class="location-lng" data-lng="6.9583"></div>
                 <div class="location-distance"></div>
             </div>
 
             <!-- Location 4 -->
             <div class="location-item" data-jplist-item>
-                <div class="location-name">Griffith Park</div>
-                <div class="location-address">Los Angeles, CA 90027</div>
-                <div class="location-lat" data-lat="34.1365"></div>
-                <div class="location-lng" data-lng="-118.2946"></div>
+                <div class="location-name">Marienplatz</div>
+                <div class="location-address">Marienplatz, 80331 München</div>
+                <div class="location-lat" data-lat="48.1373"></div>
+                <div class="location-lng" data-lng="11.5754"></div>
                 <div class="location-distance"></div>
             </div>
 
             <!-- Location 5 -->
             <div class="location-item" data-jplist-item>
-                <div class="location-name">Balboa Park</div>
-                <div class="location-address">San Diego, CA 92101</div>
-                <div class="location-lat" data-lat="32.7341"></div>
-                <div class="location-lng" data-lng="-117.1446"></div>
+                <div class="location-name">Hamburg Harbor</div>
+                <div class="location-address">St. Pauli-Landungsbrücken, 20359 Hamburg</div>
+                <div class="location-lat" data-lat="53.5465"></div>
+                <div class="location-lng" data-lng="9.9700"></div>
                 <div class="location-distance"></div>
             </div>
 
             <!-- Location 6 -->
             <div class="location-item" data-jplist-item>
-                <div class="location-name">Boston Common</div>
-                <div class="location-address">Boston, MA 02116</div>
-                <div class="location-lat" data-lat="42.3551"></div>
-                <div class="location-lng" data-lng="-71.0657"></div>
+                <div class="location-name">Heidelberg Castle</div>
+                <div class="location-address">Schlosshof 1, 69117 Heidelberg</div>
+                <div class="location-lat" data-lat="49.4108"></div>
+                <div class="location-lng" data-lng="8.7153"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 7 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Reichstag Building</div>
+                <div class="location-address">Platz der Republik 1, 11011 Berlin</div>
+                <div class="location-lat" data-lat="52.5186"></div>
+                <div class="location-lng" data-lng="13.3762"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 8 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Frauenkirche Dresden</div>
+                <div class="location-address">Neumarkt, 01067 Dresden</div>
+                <div class="location-lat" data-lat="51.0519"></div>
+                <div class="location-lng" data-lng="13.7401"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 9 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Englischer Garten</div>
+                <div class="location-address">Englischer Garten, 80538 München</div>
+                <div class="location-lat" data-lat="48.1642"></div>
+                <div class="location-lng" data-lng="11.6056"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 10 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Europa-Park</div>
+                <div class="location-address">Europa-Park-Straße 2, 77977 Rust</div>
+                <div class="location-lat" data-lat="48.2660"></div>
+                <div class="location-lng" data-lng="7.7220"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 11 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Zwinger Palace</div>
+                <div class="location-address">Sophienstraße, 01067 Dresden</div>
+                <div class="location-lat" data-lat="51.0530"></div>
+                <div class="location-lng" data-lng="13.7336"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 12 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Nürburgring</div>
+                <div class="location-address">Otto-Flimm-Straße, 53520 Nürburg</div>
+                <div class="location-lat" data-lat="50.3356"></div>
+                <div class="location-lng" data-lng="6.9475"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 13 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Rothenburg ob der Tauber</div>
+                <div class="location-address">Marktplatz, 91541 Rothenburg ob der Tauber</div>
+                <div class="location-lat" data-lat="49.3800"></div>
+                <div class="location-lng" data-lng="10.1863"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 14 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Sanssouci Palace</div>
+                <div class="location-address">Maulbeerallee, 14469 Potsdam</div>
+                <div class="location-lat" data-lat="52.4042"></div>
+                <div class="location-lng" data-lng="13.0385"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 15 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Olympiapark Munich</div>
+                <div class="location-address">Spiridon-Louis-Ring 21, 80809 München</div>
+                <div class="location-lat" data-lat="48.1731"></div>
+                <div class="location-lng" data-lng="11.5522"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 16 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Speicherstadt Hamburg</div>
+                <div class="location-address">Am Sandtorkai, 20457 Hamburg</div>
+                <div class="location-lat" data-lat="53.5434"></div>
+                <div class="location-lng" data-lng="9.9882"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 17 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Zugspitze</div>
+                <div class="location-address">82491 Grainau</div>
+                <div class="location-lat" data-lat="47.4211"></div>
+                <div class="location-lng" data-lng="10.9855"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 18 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Tropical Islands Resort</div>
+                <div class="location-address">Tropical-Islands-Allee 1, 15910 Krausnick</div>
+                <div class="location-lat" data-lat="52.0374"></div>
+                <div class="location-lng" data-lng="13.7495"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 19 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Hohenzollern Castle</div>
+                <div class="location-address">72379 Burg Hohenzollern</div>
+                <div class="location-lat" data-lat="48.3249"></div>
+                <div class="location-lng" data-lng="8.9677"></div>
+                <div class="location-distance"></div>
+            </div>
+
+            <!-- Location 20 -->
+            <div class="location-item" data-jplist-item>
+                <div class="location-name">Loreley Rock</div>
+                <div class="location-address">56346 St. Goarshausen</div>
+                <div class="location-lat" data-lat="50.1394"></div>
+                <div class="location-lng" data-lng="7.7269"></div>
                 <div class="location-distance"></div>
             </div>
         </div>
