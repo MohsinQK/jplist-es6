@@ -217,10 +217,10 @@ class FilterAction{
     static formatDistance(distance) {
         if (distance < 1) {
             // Convert to meters if less than 1 km
-            return Math.round(distance * 1000) + 'm';
+            return Math.round(distance * 1000) + ' m';
         } else {
             // Display in km with no decimal places
-            return Math.round(distance) + 'km';
+            return Math.round(distance) + ' km';
         }
     }
 
